@@ -1,5 +1,5 @@
 "use client";
-
+import { cs142models } from "@/model/photoData";
 // import { useSession } from "@/app/(main)/SessionProvider";
 import {
   DropdownMenu,
@@ -15,10 +15,12 @@ import {
 } from "../ui/dropdown-menu";
 import UserAvatar from "./UserAvatar";
 import Link from "next/link";
+
 import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
 // import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 // import { useQueryClient } from "@tanstack/react-query";
 
 interface UserButtonProps {
@@ -27,6 +29,20 @@ interface UserButtonProps {
 export default function UserButton({ className }: UserButtonProps) {
   // const { user } = useSession();
   const { theme, setTheme } = useTheme();
+  const pathname = usePathname();
+  const parts = pathname.split("/");
+  console.log(parts[1], parts[2]);
+  if (parts[1] === "photo-share") {
+    const user = cs142models.userModel(parts[2]);
+    return user ? (
+      <div>
+        {user?.first_name} {user?.last_name}
+      </div>
+    ) : (
+      <div>No user</div>
+    );
+  }
+
   // const queryClient = useQueryClient();
   return (
     <DropdownMenu>
