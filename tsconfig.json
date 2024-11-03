@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/model/photoData.js"
+    "src/model/photoData.js",
+    "src/app/@modal/default.jsx"
   ],
   "exclude": ["node_modules"]
 }

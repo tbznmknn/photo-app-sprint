@@ -10,7 +10,7 @@ export default function Navbar() {
           Radnaabazar Bulgan
         </Link>
         <SearchField />
-        <Link href="/photo-share/hi" className={styles.logo}>
+        <Link href="/photo-share" className={styles.logo}>
           Photo-Share
         </Link>
         <UserButton className={styles.userbutton} />{" "}
