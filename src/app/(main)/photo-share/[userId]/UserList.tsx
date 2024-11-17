@@ -3,6 +3,7 @@ import Link from "next/link";
 import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
+import SheetPhoto from "./SheetPhoto";
 type UserList = {
   _id: string;
   first_name: string;
@@ -10,6 +11,8 @@ type UserList = {
   location: string;
   description: string;
   occupation: string;
+  numComments: number;
+  numPhotos: number;
 };
 export default async function UserList({ userId }: { userId: string }) {
   try {
@@ -32,6 +35,16 @@ export default async function UserList({ userId }: { userId: string }) {
                 >
                   {user.first_name} {user.last_name}
                 </Link>
+                <div className={styles.custom_button}>
+                  <span
+                    title="photos"
+                    className="text-black text-[12px] font-medium"
+                  >
+                    {user.numPhotos}
+                  </span>
+                </div>
+
+                <SheetPhoto userId={user._id} count={user.numComments} />
               </li>
             );
           })}

@@ -4,16 +4,18 @@ import {
   Card,
   CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+
 interface Props {
   userId: string;
 }
+
 export interface UserImage {
   _id: string;
   date_time: string;
@@ -28,30 +30,35 @@ export default async function UserPhoto({ userId }: Props) {
     const images: UserImage[] = response.data.data;
 
     return (
-      <div>
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <h1 className={styles.h1}>User photos</h1>
-        {images.map((image) => (
-          <Card key={image._id} className="w-[350px]">
-            <CardHeader>
-              <CardTitle>Photo</CardTitle>
-              <CardDescription>
-                {image.file_name} {image.date_time}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Image
-                src={`/images/${image.file_name}`}
-                width={200}
-                height={200}
-                alt={image._id}
-              />
-            </CardContent>
-            {/* <CardFooter className="flex justify-between">
-              <Button variant="outline">Cancel</Button>
-              <Button>Deploy</Button>
-            </CardFooter> */}
-          </Card>
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
+          {images.map((image) => (
+            <Card
+              key={image._id}
+              className="w-full hover:bg-muted hover:cursor-pointer"
+            >
+              <CardHeader>
+                <CardTitle>Photo</CardTitle>
+                <CardDescription>
+                  {image.file_name}{" "}
+                  {new Date(image.date_time).toLocaleDateString()}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Link href={`/photo-share/photo/${image._id}`}>
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${image.file_name}`}
+                    width={400}
+                    height={250}
+                    alt={image._id}
+                    className="object-cover w-full h-auto"
+                  />
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     );
   } catch (error) {
@@ -65,7 +72,6 @@ export default async function UserPhoto({ userId }: Props) {
         console.error("Server error - please try again later");
       }
     } else {
-      // Handle non-Axios errors here
       console.error("Unexpected error:", error);
     }
     throw error;

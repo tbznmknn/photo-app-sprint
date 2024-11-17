@@ -30,13 +30,10 @@ export default async function UserDetail({ userId }: Props) {
 
     if (!user) return <div>User not found</div>;
     return (
-      <div>
+      <div className="w-full">
         <h1 className={styles.h1}>User details</h1>
         <div className={styles.userdetailsplitter}>
           <UserDescriptions user={user} />
-          {/* <div>
-          <UserImage images={pictures} />
-        </div> */}
         </div>
       </div>
     );
@@ -59,7 +56,7 @@ export default async function UserDetail({ userId }: Props) {
 
 function UserDescriptions({ user }: { user: UserModel }) {
   return (
-    <div>
+    <div className="w-full ">
       <div className={styles.userinput}>
         <Label htmlFor="email">First Name</Label>
         <Input value={user.first_name} placeholder="Email" />
