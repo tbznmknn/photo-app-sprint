@@ -2,7 +2,11 @@ import axiosInstance from "@/lib/axiosInstance";
 import Image from "next/image";
 import CommentEditor from "./CommentEditor";
 import styles from "./photoDetail.module.css";
-import getToken from "@/lib/getToken";
+import getToken, { getSession } from "@/lib/getToken";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
+import DeleteCommentButton from "./DeleteComment";
 
 export interface Photo {
   _id: string;
@@ -10,6 +14,7 @@ export interface Photo {
   date_time: Date;
   user_id: string;
   comments: Comment[];
+  likes: string[];
   __v: number;
 }
 
@@ -25,15 +30,23 @@ interface Props {
 }
 
 export default async function PhotoDetail({ params }: Props) {
+  const { id } = await params;
   const TOKEN = await getToken();
+  const SESSION = await getSession();
   const axiosTOKEN = {
     headers: {
       Authorization: `Bearer ${TOKEN}`,
     },
   };
-  const response = await axiosInstance.get(`/photos/${params.id}`, axiosTOKEN);
+  const response = await axiosInstance
+    .get(`/photos/${id}`, axiosTOKEN)
+    .catch((err: any) => {
+      notFound();
+    });
   const photo: Photo = response.data.data; // Assuming there's only one photo
-
+  console.log(photo);
+  const isLiked = photo.likes.some((like) => like === SESSION?.id);
+  console.log("is liked,", isLiked);
   if (!photo) {
     return <div>No photo available</div>;
   }
@@ -49,7 +62,15 @@ export default async function PhotoDetail({ params }: Props) {
                 {new Date(photo.date_time).toLocaleDateString()}
               </div>
             </div>
-            <div className={styles.headerRight}>Posted by {photo.user_id}</div>
+            <div className={styles.headerRight}>
+              Posted by{" "}
+              <Link
+                className="text-blue-400"
+                href={`/photo-share/${photo.user_id}`}
+              >
+                {photo.user_id}
+              </Link>
+            </div>
           </div>
           <div className={styles.imageContainer}>
             <Image
@@ -60,23 +81,54 @@ export default async function PhotoDetail({ params }: Props) {
               className={styles.image}
             />
           </div>
-          <CommentEditor id={photo._id} TOKEN={TOKEN!} />
+          <CommentEditor
+            id={photo._id}
+            TOKEN={TOKEN!}
+            isLikedProp={isLiked}
+            likesProp={photo.likes.length}
+          />
           <div className={styles.commentsContainer}>
             {photo.comments.length > 0 ? (
               <div>
-                <strong>Comments:</strong>
+                <strong className="mb-2">Comments:</strong>
                 <ul className={styles.commentsList}>
-                  {photo.comments.map((comment) => (
-                    <li key={comment._id} className={styles.commentItem}>
-                      <div className={styles.commentUser}>
-                        User {comment.user_id}:{" "}
-                      </div>
-                      <div>{comment.comment}</div>
-                      <div className={styles.commentDate}>
-                        {new Date(comment.date_time).toLocaleDateString()}
-                      </div>
-                    </li>
-                  ))}
+                  {photo.comments.map((comment) => {
+                    const isOwner = comment.user_id === SESSION?.id;
+                    const date = new Date();
+                    const formattedDate = date.toLocaleString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    });
+                    return (
+                      <li key={comment._id} className={styles.commentItem}>
+                        <Separator />
+                        <div className="flex justify-between items-center">
+                          <div className={styles.commentUser}>
+                            User {comment.user_id}{" "}
+                            <span className={styles.commentDate}>
+                              {" "}
+                              {formattedDate}
+                            </span>
+                            :{" "}
+                          </div>
+                          {isOwner && (
+                            <DeleteCommentButton
+                              TOKEN={TOKEN!}
+                              commentId={comment._id}
+                            />
+                          )}
+                        </div>
+                        <div>{comment.comment}</div>
+                        {/* <div className={styles.commentDate}>
+                          {formattedDate}
+                        </div> */}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             ) : (

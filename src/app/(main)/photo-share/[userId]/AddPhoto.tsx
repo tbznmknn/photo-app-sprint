@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useState, useTransition } from "react";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function AddPhoto({ TOKEN }: { TOKEN: string }) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -40,8 +41,20 @@ export default function AddPhoto({ TOKEN }: { TOKEN: string }) {
           axiosTOKEN
         );
         console.log(response.data);
-        router.refresh(); // Refresh or redirect after the upload completes
-        setSelectedFile(null); // Clear the selected file after upload
+        router.refresh();
+        const date = new Date();
+        const formattedDate = date.toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        toast.success(`You have uploaded a photo`, {
+          description: formattedDate,
+        });
+        setSelectedFile(null);
       } catch (error: any) {
         if (error.response) {
           console.error("Error status:", error.response.status);
@@ -52,7 +65,9 @@ export default function AddPhoto({ TOKEN }: { TOKEN: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="mt-2">
+      <strong>Add photo:</strong>
+
       <div className="flex gap-2">
         <Input
           id="picture"

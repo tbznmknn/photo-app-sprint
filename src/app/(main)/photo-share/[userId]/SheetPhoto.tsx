@@ -33,8 +33,8 @@ export default function SheetPhoto({
   count: number;
   userId: string;
 }) {
-  const [data, setData] = useState<Comment[] | null>(null); // State to store fetched data
-  const [isLoading, setIsLoading] = useState(false); // State to handle loading
+  const [data, setData] = useState<Comment[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const fetchData = async () => {
     try {
       setIsLoading(true);
@@ -91,9 +91,9 @@ export default function SheetPhoto({
                 </p> */}
                 <Link href={`/photo-share/photo/${comment.id}`}>
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${comment.file_name}`} // Adjust the path as needed
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${comment.file_name}`}
                     alt={comment.file_name}
-                    width={1000} // Adjust dimensions
+                    width={1000}
                     height={50}
                     className="rounded hover:cursor-pointer"
                   />

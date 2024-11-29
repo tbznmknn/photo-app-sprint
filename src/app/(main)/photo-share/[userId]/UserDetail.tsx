@@ -6,7 +6,9 @@ import { Textarea } from "@/components/ui/textarea";
 import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
-import getToken from "@/lib/getToken";
+import getToken, { getSession } from "@/lib/getToken";
+import { Button } from "@/components/ui/button";
+import DeleteAccountButton from "./DeleteMyAccount";
 // import Image from "next/image";
 interface Props {
   userId: string;
@@ -61,7 +63,9 @@ export default async function UserDetail({ userId }: Props) {
   }
 }
 
-function UserDescriptions({ user }: { user: UserModel }) {
+async function UserDescriptions({ user }: { user: UserModel }) {
+  const SESSION = await getSession();
+  const TOKEN = await getToken();
   return (
     <div className="w-full ">
       <div className={styles.userinput}>
@@ -88,6 +92,7 @@ function UserDescriptions({ user }: { user: UserModel }) {
           placeholder="Description"
         />
       </div>
+      <DeleteAccountButton TOKEN={TOKEN!} userId={SESSION!.id} />
     </div>
   );
 }

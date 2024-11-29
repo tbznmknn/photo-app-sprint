@@ -48,13 +48,12 @@ export default function LoginForm() {
           Object.entries(data).filter(([key, value]) => value !== null)
         );
         const response = await axiosInstance.post("/user", filteredData);
-        console.log(response.data.data); // Handle successful response data
+        console.log(response.data.data);
         router.push("/login");
       } catch (error: any) {
         if (error.response) {
-          // Access the error response body
           console.error("Error status:", error.response.status);
-          console.error("Error data:", error.response.data); // The error response body
+          console.error("Error data:", error.response.data);
           console.error("Error headers:", error.response.headers);
           setError(error.response?.data?.message);
         }

@@ -9,7 +9,7 @@ export default async function Navbar() {
   return (
     <header className={`${styles.header}`}>
       <div className={styles.container}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/photo-share" className={styles.logo}>
           Radnaabazar Bulgan
         </Link>
         <SearchField />

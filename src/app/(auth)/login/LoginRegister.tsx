@@ -6,7 +6,6 @@ import Link from "next/link";
 export const metadata: Metadata = { title: "login" };
 import Image from "next/image";
 import loginImage from "@/assets/login-image.jpg";
-import { title } from "process";
 export default function LoginRegister({ isLogin }: { isLogin: boolean }) {
   const urls = {
     login: { url: "/login", p: "Хаягтай юу?", title: "Бүртгүүлэх" },

@@ -1,5 +1,5 @@
 "use client";
-import { cs142models } from "@/model/photoData";
+// import { cs142models } from "@/model/photoData";
 import Cookies from "js-cookie";
 // import { useSession } from "@/app/(main)/SessionProvider";
 import {

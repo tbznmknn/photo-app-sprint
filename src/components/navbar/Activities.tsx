@@ -1,30 +1,20 @@
 "use client";
 
 import Image from "next/image";
-// import { useSession } from "@/app/(main)/SessionProvider";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import UserAvatar from "./UserAvatar";
-import Link from "next/link";
 
 import { RefreshCwIcon, LoaderIcon } from "lucide-react";
-// import { logout } from "@/app/(auth)/actions";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { usePathname, useRouter } from "next/navigation";
 import axiosInstance from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
-// import { useQueryClient } from "@tanstack/react-query";
 
 interface ActivitiesProps {
   className?: string;
@@ -35,13 +25,11 @@ export default function Activities({ className }: ActivitiesProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch activities from the backend
     const fetchActivities = async () => {
       try {
         const response = await axiosInstance.get("/admin/activity");
-        // console.log(response.data.data);
 
-        setActivities(response.data.data); // Store the activities in state
+        setActivities(response.data.data);
       } catch (err) {
         console.error("Error fetching activities:", err);
         setError("Failed to load activities");
@@ -51,14 +39,14 @@ export default function Activities({ className }: ActivitiesProps) {
     };
 
     fetchActivities();
-  }, []); // Empty dependency array to run the effect only once on mount
+  }, []);
 
   const handleRefresh = async (event: React.MouseEvent) => {
     event.preventDefault();
     setLoading(true);
     try {
       const response = await axiosInstance.get("/admin/activity");
-      setActivities(response.data.data); // Refresh activities
+      setActivities(response.data.data);
     } catch (err) {
       console.error("Error refreshing activities:", err);
       setError("Failed to refresh activities");
@@ -67,7 +55,6 @@ export default function Activities({ className }: ActivitiesProps) {
     }
   };
 
-  // const queryClient = useQueryClient();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -102,15 +89,36 @@ export default function Activities({ className }: ActivitiesProps) {
                 <div className="mt-2">
                   <div className="font-medium">{activity.type}</div>
 
-                  {/* Conditional rendering for specific activity types */}
                   {activity.type === "Photo Upload" && (
                     <div className="mt-2">
                       <Image
-                        width={400}
-                        height={250}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`} // Adjust based on your file path
+                        width={200}
+                        height={100}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`}
                         alt="Uploaded photo"
-                        className="w-20 h-20 object-cover"
+                        className="w-100 h-20 object-cover"
+                      />
+                    </div>
+                  )}
+                  {activity.type === "Photo Like" && (
+                    <div className="mt-2">
+                      <Image
+                        width={200}
+                        height={100}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`}
+                        alt="Liked photo"
+                        className="w-100 h-20 object-cover"
+                      />
+                    </div>
+                  )}
+                  {activity.type === "Photo Unlike" && (
+                    <div className="mt-2">
+                      <Image
+                        width={200}
+                        height={100}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`}
+                        alt="Unliked photo"
+                        className="w-100 h-20 object-cover"
                       />
                     </div>
                   )}
@@ -118,11 +126,11 @@ export default function Activities({ className }: ActivitiesProps) {
                   {activity.type === "New Comment" && activity.photo && (
                     <div className="mt-2">
                       <Image
-                        width={400}
-                        height={250}
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`} // Adjust based on your file path
+                        width={200}
+                        height={100}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}uploads/${activity.photo.file_name}`}
                         alt="Commented photo"
-                        className="w-20 h-20 object-cover"
+                        className="w-100 h-20 object-cover"
                       />
                     </div>
                   )}

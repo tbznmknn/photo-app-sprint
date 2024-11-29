@@ -1,6 +1,8 @@
 // import Image from "next/image";
 import getToken from "@/lib/getToken";
+import { redirect } from "next/navigation";
 export default async function Home() {
+  redirect("/photo-share");
   const Token = await getToken();
   console.log("getToken", Token);
   return (

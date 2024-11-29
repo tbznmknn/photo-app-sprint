@@ -29,27 +29,35 @@
   margin-bottom: 12px;
 }
 
-.header-left {
+.headerLeft {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.header-left .title {
+.headerLeft .title {
   font-weight: 500;
   text-decoration: underline;
+  word-break: break-all;
+  display: block;
+  max-width: 400px;
+  word-wrap: break-word;
 }
 
-.header-left .subtitle {
+.headerLeft .subtitle {
   font-size: 14px;
   color: #888; /* Muted color */
 }
 
-.header-right {
+.headerRight {
   font-weight: 400;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  word-break: break-all;
 }
 
-.image-container {
+.imageContainer {
   margin-top: 16px;
 }
 
@@ -58,31 +66,35 @@
   width: 100%;
 }
 
-.comments-container {
+.commentsContainer {
   white-space: pre-line;
   word-break: break-word;
   margin-top: 24px;
 }
 
-.comments-list {
+.commentsList {
   margin-top: 16px;
   list-style: none;
   padding-left: 0;
 }
+.commentDate {
+  color: #888;
+  font-size: small;
+}
 
-.comment-item {
+.commentItem {
   margin-bottom: 12px;
 }
 
-.comment-user {
+.commentUser {
   font-weight: 500;
 }
 
-.comment-date {
+.commentDate {
   font-size: 12px;
   color: #888; /* Muted color */
 }
 
-.no-comments {
+.noComments {
   margin-top: 12px;
 }
