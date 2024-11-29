@@ -1,6 +1,8 @@
 // import Image from "next/image";
-
-export default function Home() {
+import getToken from "@/lib/getToken";
+export default async function Home() {
+  const Token = await getToken();
+  console.log("getToken", Token);
   return (
     <div>
       <iframe

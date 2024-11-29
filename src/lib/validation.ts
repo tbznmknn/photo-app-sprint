@@ -6,7 +6,16 @@ export const signUpSchema = z
       /^[a-zA-Z0-9_-]+$/,
       "Only letters, numbers, - and  _ allowed"
     ),
-    password: requiredString.min(8, "Must be at least 8 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one digit")
+      .regex(
+        /[!@#$%^&*(),.?":{}|<>]/,
+        "Password must contain at least one special character"
+      ),
     location: z.string().optional(),
     description: z.string().optional(),
     occupation: z.string().optional(),

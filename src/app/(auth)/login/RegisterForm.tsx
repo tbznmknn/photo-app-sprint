@@ -49,7 +49,7 @@ export default function LoginForm() {
         );
         const response = await axiosInstance.post("/user", filteredData);
         console.log(response.data.data); // Handle successful response data
-        // router.push("/");
+        router.push("/login");
       } catch (error: any) {
         if (error.response) {
           // Access the error response body
@@ -131,9 +131,9 @@ export default function LoginForm() {
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Хаяг</FormLabel>
+              <FormLabel>Газрын хаяг</FormLabel>
               <FormControl>
-                <Input placeholder="Хаяг" {...field} />
+                <Input placeholder="Газрын хаяг" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

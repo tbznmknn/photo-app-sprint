@@ -1,5 +1,6 @@
 "use client";
 import { cs142models } from "@/model/photoData";
+import Cookies from "js-cookie";
 // import { useSession } from "@/app/(main)/SessionProvider";
 import {
   DropdownMenu,
@@ -27,8 +28,14 @@ import { useEffect, useState } from "react";
 
 interface UserButtonProps {
   className?: string;
+  loginName?: string;
+  id?: string;
 }
-export default function UserButton({ className }: UserButtonProps) {
+export default function UserButton({
+  className,
+  loginName,
+  id,
+}: UserButtonProps) {
   const router = useRouter();
   // const { user } = useSession();
   const { theme, setTheme } = useTheme();
@@ -57,8 +64,8 @@ export default function UserButton({ className }: UserButtonProps) {
     } else {
       setLoading(false);
     }
-  }, [pathname, parts]);
-  if (parts[1] === "photo-share") {
+  }, [pathname]);
+  if (parts[1] === "photo-sharea") {
     return loading ? (
       <div>loading</div>
     ) : user ? (
@@ -75,13 +82,13 @@ export default function UserButton({ className }: UserButtonProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className={cn("flex-none rounded-full", className)}>
-          <UserAvatar avatarUrl={"/images/thorfinn.jpg"} size={40} />
+          <UserAvatar avatarUrl={"/assets/thorfinn.jpg"} size={40} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Logged in as @radnaa2015</DropdownMenuLabel>
+        <DropdownMenuLabel>Logged in as @{loginName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href={`/users/1`}>
+        <Link href={`/photo-share/${id}`}>
           <DropdownMenuItem>
             <UserIcon className="mr-2 size-4" />
             Profile
@@ -115,6 +122,7 @@ export default function UserButton({ className }: UserButtonProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
+            Cookies.remove("TOKEN");
             router.push("/login");
           }}
         >

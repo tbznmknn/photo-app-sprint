@@ -4,6 +4,7 @@ import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
 import SheetPhoto from "./SheetPhoto";
+import getToken from "@/lib/getToken";
 type UserList = {
   _id: string;
   first_name: string;
@@ -16,7 +17,13 @@ type UserList = {
 };
 export default async function UserList({ userId }: { userId: string }) {
   try {
-    const response = await axiosInstance.get(`/user/list`);
+    const TOKEN = await getToken();
+    const axiosTOKEN = {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    };
+    const response = await axiosInstance.get(`/user/list`, axiosTOKEN);
     const users: UserList[] = response.data.data;
     return (
       <div>
@@ -44,7 +51,11 @@ export default async function UserList({ userId }: { userId: string }) {
                   </span>
                 </div>
 
-                <SheetPhoto userId={user._id} count={user.numComments} />
+                <SheetPhoto
+                  userId={user._id}
+                  count={user.numComments}
+                  TOKEN={TOKEN}
+                />
               </li>
             );
           })}

@@ -17,6 +17,7 @@ import { CloudCog } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+// import getToken from "@/lib/getToken";
 interface Comment {
   file_name: string;
   comment: string;
@@ -26,7 +27,9 @@ interface Comment {
 export default function SheetPhoto({
   count,
   userId,
+  TOKEN,
 }: {
+  TOKEN: string;
   count: number;
   userId: string;
 }) {
@@ -35,9 +38,17 @@ export default function SheetPhoto({
   const fetchData = async () => {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(`/user/comments/${userId}`);
+      const axiosTOKEN = {
+        headers: {
+          Authorization: `Bearer ${TOKEN}`,
+        },
+      };
+      const response = await axiosInstance.get(
+        `/user/comments/${userId}`,
+        axiosTOKEN
+      );
       console.log("response", response);
-      setData(response.data.data); // Store fetched data
+      setData(response.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

@@ -2,7 +2,10 @@ import SearchField from "@/components/SearchField";
 import UserButton from "@/components/navbar/UserButton";
 import Link from "next/link";
 import styles from "./Navbar.module.css"; // Import CSS module
-export default function Navbar() {
+import { getSession } from "@/lib/getToken";
+import Activities from "./Activities";
+export default async function Navbar() {
+  const session = await getSession();
   return (
     <header className={`${styles.header}`}>
       <div className={styles.container}>
@@ -13,7 +16,10 @@ export default function Navbar() {
         <Link href="/photo-share" className={styles.logo}>
           Photo-Share
         </Link>
-        <UserButton className={styles.userbutton} />{" "}
+        <div className={styles.userbutton}>
+          <Activities />
+          <UserButton loginName={session?.login_name} id={session?.id} />
+        </div>
       </div>
     </header>
   );

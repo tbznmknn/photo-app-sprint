@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
+import getToken from "@/lib/getToken";
 // import Image from "next/image";
 interface Props {
   userId: string;
@@ -24,7 +25,13 @@ export const getServerSideProps = async () => {
 
 export default async function UserDetail({ userId }: Props) {
   try {
-    const response = await axiosInstance.get(`/user/${userId}`);
+    const TOKEN = await getToken();
+    const axiosTOKEN = {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    };
+    const response = await axiosInstance.get(`/user/${userId}`, axiosTOKEN);
 
     const user = response.data.data;
 

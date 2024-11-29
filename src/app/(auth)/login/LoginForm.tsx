@@ -4,6 +4,7 @@ import { loginSchema, LoginValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 import {
   Form,
   FormControl,
@@ -41,7 +42,9 @@ export default function LoginForm() {
         };
         const response = await axiosInstance.post("/admin/login", data);
         console.log(response.data.data); // Handle successful response data
-        // router.push("/");
+
+        Cookies.set("TOKEN", response.data.data.token);
+        router.refresh();
       } catch (error: any) {
         if (error.response) {
           // Access the error response body

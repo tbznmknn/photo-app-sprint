@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/axiosInstance";
 import Image from "next/image";
 import CommentEditor from "./CommentEditor";
 import styles from "./photoDetail.module.css";
+import getToken from "@/lib/getToken";
 
 export interface Photo {
   _id: string;
@@ -24,7 +25,13 @@ interface Props {
 }
 
 export default async function PhotoDetail({ params }: Props) {
-  const response = await axiosInstance.get(`/photos/${params.id}`);
+  const TOKEN = await getToken();
+  const axiosTOKEN = {
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  };
+  const response = await axiosInstance.get(`/photos/${params.id}`, axiosTOKEN);
   const photo: Photo = response.data.data; // Assuming there's only one photo
 
   if (!photo) {
@@ -53,7 +60,7 @@ export default async function PhotoDetail({ params }: Props) {
               className={styles.image}
             />
           </div>
-          <CommentEditor id={photo._id} />
+          <CommentEditor id={photo._id} TOKEN={TOKEN!} />
           <div className={styles.commentsContainer}>
             {photo.comments.length > 0 ? (
               <div>

@@ -23,6 +23,8 @@
   color: hsl(var(--primary));
 }
 .userbutton {
+  display: flex;
+  gap: 1rem;
 }
 @media (min-width: 640px) {
   .userbutton {

@@ -5,7 +5,13 @@ import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-export default function CommentEditor({ id }: { id: string }) {
+export default function CommentEditor({
+  id,
+  TOKEN,
+}: {
+  id: string;
+  TOKEN: string;
+}) {
   const [comment, setComment] = useState(""); // State to hold the comment input
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -19,10 +25,16 @@ export default function CommentEditor({ id }: { id: string }) {
 
     startTransition(async () => {
       try {
+        const axiosTOKEN = {
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+        };
         const data = { comment };
         const response = await axiosInstance.post(
           `/commentsOfPhoto/${id}`,
-          data
+          data,
+          axiosTOKEN
         );
         console.log(response.data.data);
         setComment("");

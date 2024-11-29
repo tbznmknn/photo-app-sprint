@@ -11,6 +11,8 @@ import axiosInstance from "@/lib/axiosInstance";
 import axios from "axios";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import getToken from "@/lib/getToken";
+import AddPhoto from "./AddPhoto";
 
 interface Props {
   userId: string;
@@ -25,14 +27,25 @@ export interface UserImage {
 
 export default async function UserPhoto({ userId }: Props) {
   try {
-    const response = await axiosInstance.get(`/user/photosOfUser/${userId}`);
+    const TOKEN = await getToken();
+    const axiosTOKEN = {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+      },
+    };
+    const response = await axiosInstance.get(
+      `/user/photosOfUser/${userId}`,
+      axiosTOKEN
+    );
     console.log(response.data);
     const images: UserImage[] = response.data.data;
 
     return (
       <div className="w-full px-4 sm:px-6 lg:px-8">
         <h1 className={styles.h1}>User photos</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
+        <strong>Add photo:</strong>
+        <AddPhoto TOKEN={TOKEN!} />
+        <div className="grid grid-cols-1 mt-2 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4">
           {images.map((image) => (
             <Card
               key={image._id}
