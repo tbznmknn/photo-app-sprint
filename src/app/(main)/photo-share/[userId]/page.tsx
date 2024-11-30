@@ -2,6 +2,8 @@ import UserList from "./UserList";
 import styles from "./container.module.css";
 import UserDetail from "./UserDetail";
 import UserPhotos from "./UserPhotos";
+import { Metadata } from "next";
+export const metadata: Metadata = { title: "User Detail" };
 interface Props {
   params: { userId: string };
 }

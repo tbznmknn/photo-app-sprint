@@ -7,7 +7,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import DeleteCommentButton from "./DeleteComment";
-
+import { Metadata } from "next";
+export const metadata: Metadata = { title: "Photo" };
 export interface Photo {
   _id: string;
   file_name: string;

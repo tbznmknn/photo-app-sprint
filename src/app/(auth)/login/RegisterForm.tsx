@@ -17,6 +17,7 @@ import LoadingButton from "@/components/LoadingButton";
 import { PasswordInput } from "@/components/PasswordInput";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -49,6 +50,18 @@ export default function LoginForm() {
         );
         const response = await axiosInstance.post("/user", filteredData);
         console.log(response.data.data);
+        const date = new Date();
+        const formattedDate = date.toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        toast.success(`Registration successful`, {
+          description: formattedDate,
+        });
         router.push("/login");
       } catch (error: any) {
         if (error.response) {

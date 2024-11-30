@@ -121,9 +121,9 @@ export default function UserButton({
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => {
+          onClick={async () => {
             Cookies.remove("TOKEN");
-            router.push("/login");
+            window.location.reload();
           }}
         >
           <LogOutIcon className="mr-2 size-4" />

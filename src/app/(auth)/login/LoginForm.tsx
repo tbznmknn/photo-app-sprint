@@ -18,6 +18,7 @@ import LoadingButton from "@/components/LoadingButton";
 import { PasswordInput } from "@/components/PasswordInput";
 import axiosInstance from "@/lib/axiosInstance";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -41,15 +42,27 @@ export default function LoginForm() {
           password: values.password,
         };
         const response = await axiosInstance.post("/admin/login", data);
-        console.log(response.data.data); // Handle successful response data
+        console.log(response.data.data);
+        const date = new Date();
 
+        const formattedDate = date.toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        });
+        toast.success(`Logged in `, {
+          description: formattedDate,
+        });
         Cookies.set("TOKEN", response.data.data.token);
-        router.refresh();
+        // router.refresh();
+        router.push(`/photo-share/${response.data.data.userId}`);
       } catch (error: any) {
         if (error.response) {
-          // Access the error response body
           console.error("Error status:", error.response.status);
-          console.error("Error data:", error.response.data); // The error response body
+          console.error("Error data:", error.response.data);
           console.error("Error headers:", error.response.headers);
           setError(error.response?.data?.message);
         }

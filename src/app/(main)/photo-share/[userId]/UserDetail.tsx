@@ -92,7 +92,9 @@ async function UserDescriptions({ user }: { user: UserModel }) {
           placeholder="Description"
         />
       </div>
-      <DeleteAccountButton TOKEN={TOKEN!} userId={SESSION!.id} />
+      {SESSION!.id === user._id && (
+        <DeleteAccountButton TOKEN={TOKEN!} userId={SESSION!.id} />
+      )}
     </div>
   );
 }

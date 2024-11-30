@@ -1,5 +1,7 @@
+import { Metadata } from "next";
 import UserList from "../photo-share/[userId]/UserList";
 import styles from "../photo-share/[userId]/container.module.css";
+export const metadata: Metadata = { title: "User Lists" };
 interface Props {
   params: { userId: string };
 }

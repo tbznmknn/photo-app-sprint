@@ -51,7 +51,8 @@ export default function DeleteAccountButton({
           description: formattedDate,
         });
         Cookies.remove("TOKEN");
-        router.push("/login");
+        // router.push("/login");
+        window.location.reload();
       } catch (error: any) {
         if (error.response) {
           console.error("Error status:", error.response.status);
@@ -64,7 +65,7 @@ export default function DeleteAccountButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline">Show Dialog</Button>
+        <Button variant="destructive">DELETE MY ACCOUNT</Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

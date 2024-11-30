@@ -1,6 +1,8 @@
 // import Image from "next/image";
 import getToken from "@/lib/getToken";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
+export const metadata: Metadata = { title: "Home" };
 export default async function Home() {
   redirect("/photo-share");
   const Token = await getToken();
